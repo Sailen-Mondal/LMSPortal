@@ -1,0 +1,131 @@
+@model LMSPortal.ViewModels.CourseCatalogViewModel
+@{
+    ViewBag.Title = "Course Catalog";
+}
+
+<!-- Catalog Header & Search Filter Bar -->
+<section class="py-4 bg-white border-bottom">
+    <div class="container">
+        <div class="row align-items-center gy-3 mb-4">
+            <div class="col-lg-6">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1 small text-muted">
+                        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")" class="text-decoration-none">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Course Catalog</li>
+                    </ol>
+                </nav>
+                <h1 class="fw-bold text-dark mb-0">Explore Courses</h1>
+            </div>
+            <div class="col-lg-6">
+                @using (Html.BeginForm("Index", "Course", FormMethod.Get, new { @class = "d-flex justify-content-lg-end" }))
+                {
+                    <input type="hidden" name="category" value="@Model.SelectedCategorySlug" />
+                    <input type="hidden" name="level" value="@(Model.SelectedLevel.HasValue ? Model.SelectedLevel.Value.ToString() : "")" />
+                    <input type="hidden" name="sort" value="@Model.SortBy" />
+
+                    <div class="input-group shadow-sm rounded-pill overflow-hidden" style="max-width: 400px;">
+                        <input type="text" name="search" value="@Model.SearchQuery" class="form-control border-0 ps-3 bg-light" placeholder="Search by title, topic, or instructor..." />
+                        <button class="btn btn-primary px-3" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 pt-2">
+            <!-- Category Filter Pills -->
+            <div class="d-flex flex-wrap align-items-center gap-2">
+                <a href="@Url.Action("Index", "Course", new { search = Model.SearchQuery, level = Model.SelectedLevel, sort = Model.SortBy })" 
+                   class="btn btn-sm rounded-pill px-3 @(string.IsNullOrEmpty(Model.SelectedCategorySlug) ? "btn-primary" : "btn-light border text-muted")">
+                    All Categories
+                </a>
+                @foreach (var cat in Model.Categories)
+                {
+                    <a href="@Url.Action("Index", "Course", new { search = Model.SearchQuery, category = cat.Slug, level = Model.SelectedLevel, sort = Model.SortBy })" 
+                       class="btn btn-sm rounded-pill px-3 @(Model.SelectedCategorySlug == cat.Slug ? "btn-primary" : "btn-light border text-muted")">
+                        <i class="bi @cat.IconClass me-1"></i> @cat.Name
+                    </a>
+                }
+            </div>
+
+            <!-- Level & Sort Controls -->
+            <div class="d-flex align-items-center gap-2">
+                <!-- Skill Level Filter -->
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-light border rounded-pill px-3 dropdown-toggle text-secondary" type="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-funnel me-1"></i> Level: @(Model.SelectedLevel.HasValue ? Model.SelectedLevel.Value.ToString() : "All Levels")
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 small">
+                        <li><a class="dropdown-item @(!Model.SelectedLevel.HasValue ? "active" : "")" href="@Url.Action("Index", "Course", new { search = Model.SearchQuery, category = Model.SelectedCategorySlug, sort = Model.SortBy })">All Levels</a></li>
+                        <li><a class="dropdown-item @(Model.SelectedLevel == LMSPortal.Models.CourseLevel.Beginner ? "active" : "")" href="@Url.Action("Index", "Course", new { search = Model.SearchQuery, category = Model.SelectedCategorySlug, level = LMSPortal.Models.CourseLevel.Beginner, sort = Model.SortBy })">Beginner</a></li>
+                        <li><a class="dropdown-item @(Model.SelectedLevel == LMSPortal.Models.CourseLevel.Intermediate ? "active" : "")" href="@Url.Action("Index", "Course", new { search = Model.SearchQuery, category = Model.SelectedCategorySlug, level = LMSPortal.Models.CourseLevel.Intermediate, sort = Model.SortBy })">Intermediate</a></li>
+                        <li><a class="dropdown-item @(Model.SelectedLevel == LMSPortal.Models.CourseLevel.Advanced ? "active" : "")" href="@Url.Action("Index", "Course", new { search = Model.SearchQuery, category = Model.SelectedCategorySlug, level = LMSPortal.Models.CourseLevel.Advanced, sort = Model.SortBy })">Advanced</a></li>
+                    </ul>
+                </div>
+
+                <!-- Sort Filter -->
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-light border rounded-pill px-3 dropdown-toggle text-secondary" type="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-sort-down me-1"></i> Sort: @(Model.SortBy == "title" ? "Title (A-Z)" : Model.SortBy == "duration" ? "Duration" : "Newest")
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 small">
+                        <li><a class="dropdown-item @(Model.SortBy == "newest" ? "active" : "")" href="@Url.Action("Index", "Course", new { search = Model.SearchQuery, category = Model.SelectedCategorySlug, level = Model.SelectedLevel, sort = "newest" })">Newest First</a></li>
+                        <li><a class="dropdown-item @(Model.SortBy == "title" ? "active" : "")" href="@Url.Action("Index", "Course", new { search = Model.SearchQuery, category = Model.SelectedCategorySlug, level = Model.SelectedLevel, sort = "title" })">Course Title</a></li>
+                        <li><a class="dropdown-item @(Model.SortBy == "duration" ? "active" : "")" href="@Url.Action("Index", "Course", new { search = Model.SearchQuery, category = Model.SelectedCategorySlug, level = Model.SelectedLevel, sort = "duration" })">Longest Duration</a></li>
+                    </ul>
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.SearchQuery) || !string.IsNullOrEmpty(Model.SelectedCategorySlug) || Model.SelectedLevel.HasValue)
+                {
+                    <a href="@Url.Action("Index", "Course")" class="btn btn-sm btn-link text-danger text-decoration-none px-2" title="Reset all filters">
+                        <i class="bi bi-x-circle me-1"></i> Reset
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Course Grid Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <span class="text-muted small">
+                Showing <strong class="text-dark">@Model.TotalCount</strong> courses
+                @if (!string.IsNullOrEmpty(Model.SearchQuery))
+                {
+                    <span>matching "<em class="text-primary">@Model.SearchQuery</em>"</span>
+                }
+            </span>
+        </div>
+
+        @if (Model.Courses != null && Model.Courses.Any())
+        {
+            <div class="row">
+                @foreach (var course in Model.Courses)
+                {
+                    @Html.Partial("_CourseCard", course)
+                }
+            </div>
+        }
+        else
+        {
+            <div class="card border-0 shadow-sm rounded-4 p-5 text-center bg-white my-4">
+                <div class="text-muted mb-3">
+                    <i class="bi bi-search display-3 text-secondary opacity-50"></i>
+                </div>
+                <h4 class="fw-bold text-dark mb-1">No courses found</h4>
+                <p class="text-muted small mb-4" style="max-width: 450px; margin: 0 auto;">
+                    We couldn't find any courses matching your selected search or filter criteria. Try broadening your keywords or resetting filters.
+                </p>
+                <div>
+                    <a href="@Url.Action("Index", "Course")" class="btn btn-primary rounded-pill px-4 fw-semibold">
+                        View All Available Courses
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</section>

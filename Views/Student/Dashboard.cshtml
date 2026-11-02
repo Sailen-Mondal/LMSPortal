@@ -1,0 +1,238 @@
+@model LMSPortal.ViewModels.StudentDashboardViewModel
+@{
+    ViewBag.Title = "Student Dashboard";
+}
+
+<div class="student-dashboard py-4">
+    <!-- Header Greeting -->
+    <div class="row align-items-center mb-4">
+        <div class="col-md-8">
+            <div class="d-flex align-items-center gap-3">
+                <div class="avatar-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold fs-4" style="width: 56px; height: 56px; border-radius: 16px;">
+                    @(string.IsNullOrEmpty(Model.StudentName) ? "S" : Model.StudentName.Substring(0, 1).ToUpper())
+                </div>
+                <div>
+                    <h2 class="h3 fw-bold mb-1 text-dark">Welcome back, @Model.StudentName! &#x1F44B;</h2>
+                    <p class="text-muted mb-0">Track your courses, pick up where you left off, and achieve your learning goals.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <a href="@Url.Action("Index", "Course")" class="btn btn-outline-primary rounded-pill px-3">
+                <i class="bi bi-compass me-1"></i> Browse More Courses
+            </a>
+            <a href="@Url.Action("MyCourses", "Student")" class="btn btn-primary rounded-pill px-3 ms-2">
+                <i class="bi bi-collection-play me-1"></i> My Courses
+            </a>
+        </div>
+    </div>
+
+    <!-- Metric Stat Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-white">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="text-muted small fw-semibold">Enrolled Courses</span>
+                    <div class="metric-icon bg-primary bg-opacity-10 text-primary rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="bi bi-mortarboard fs-5"></i>
+                    </div>
+                </div>
+                <h3 class="display-6 fw-bold mb-0 text-dark">@Model.TotalEnrolled</h3>
+                <small class="text-muted mt-1 d-block">@Model.InProgressCourses in progress</small>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-white">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="text-muted small fw-semibold">Lessons Completed</span>
+                    <div class="metric-icon bg-success bg-opacity-10 text-success rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="bi bi-check2-circle fs-5"></i>
+                    </div>
+                </div>
+                <h3 class="display-6 fw-bold mb-0 text-dark">@Model.TotalLessonsCompleted</h3>
+                <small class="text-success mt-1 d-block"><i class="bi bi-graph-up-arrow me-1"></i>Progress verified</small>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-white">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="text-muted small fw-semibold">Time Invested</span>
+                    <div class="metric-icon bg-info bg-opacity-10 text-info rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="bi bi-clock-history fs-5"></i>
+                    </div>
+                </div>
+                <h3 class="display-6 fw-bold mb-0 text-dark">@Model.TotalHoursLearned <span class="fs-6 fw-normal text-muted">hrs</span></h3>
+                <small class="text-muted mt-1 d-block">Curriculum hours</small>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-3">
+            <div class="card border-0 shadow-sm rounded-4 p-3 h-100 bg-white">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="text-muted small fw-semibold">Completed Courses</span>
+                    <div class="metric-icon bg-warning bg-opacity-10 text-warning rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="bi bi-trophy fs-5"></i>
+                    </div>
+                </div>
+                <h3 class="display-6 fw-bold mb-0 text-dark">@Model.CompletedCourses</h3>
+                <small class="text-muted mt-1 d-block">100% finished</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Course Hero Card (Continue Learning) -->
+    @if (Model.ActiveCourse != null)
+    {
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-5" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
+            <div class="card-body p-4 text-white">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="badge bg-primary px-3 py-1 rounded-pill">Continue Learning</span>
+                            <span class="text-white-50 small"><i class="bi bi-tag me-1"></i>@Model.ActiveCourse.CategoryName</span>
+                        </div>
+                        <h4 class="fw-bold mb-2">@Model.ActiveCourse.Title</h4>
+                        <p class="text-white-50 mb-3 small">
+                            @if (!string.IsNullOrEmpty(Model.ActiveCourse.NextLessonTitle))
+                            {
+                                <span>Next: <strong class="text-white">@Model.ActiveCourse.NextLessonTitle</strong></span>
+                                if (!string.IsNullOrEmpty(Model.ActiveCourse.NextModuleTitle))
+                                {
+                                    <span> (@Model.ActiveCourse.NextModuleTitle)</span>
+                                }
+                            }
+                            else
+                            {
+                                <span>All curriculum completed! Great work.</span>
+                            }
+                        </p>
+
+                        <!-- Progress Bar -->
+                        <div class="d-flex align-items-center gap-3 mb-2" style="max-width: 500px;">
+                            <div class="progress flex-grow-1" style="height: 10px; background-color: rgba(255,255,255,0.2); border-radius: 6px;">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: @(Model.ActiveCourse.CompletionPercentage)%; border-radius: 6px;" aria-valuenow="@Model.ActiveCourse.CompletionPercentage" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <span class="fw-bold text-white small">@Model.ActiveCourse.CompletionPercentage%</span>
+                        </div>
+                        <small class="text-white-50 d-block">@Model.ActiveCourse.CompletedLessonsCount of @Model.ActiveCourse.TotalLessonsCount lessons completed</small>
+                    </div>
+
+                    <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                        @if (Model.ActiveCourse.NextLessonId.HasValue)
+                        {
+                            <a href="@Url.Action("Player", "Learning", new { courseId = Model.ActiveCourse.CourseId, lessonId = Model.ActiveCourse.NextLessonId.Value })" class="btn btn-primary btn-lg rounded-pill px-4 shadow">
+                                <i class="bi bi-play-fill me-1"></i> Resume Course
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Player", "Learning", new { courseId = Model.ActiveCourse.CourseId })" class="btn btn-outline-light btn-lg rounded-pill px-4">
+                                <i class="bi bi-arrow-repeat me-1"></i> Review Course
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- In Progress Courses Section -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold text-dark mb-0">My Enrolled Courses</h4>
+        <a href="@Url.Action("MyCourses", "Student")" class="text-primary text-decoration-none fw-semibold small">
+            View All (@Model.TotalEnrolled) <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+    @if (Model.EnrolledCourses == null || !Model.EnrolledCourses.Any())
+    {
+        <div class="card border-0 shadow-sm rounded-4 text-center py-5 px-4 bg-white">
+            <div class="mb-3">
+                <i class="bi bi-journal-x text-muted" style="font-size: 3.5rem;"></i>
+            </div>
+            <h5 class="fw-bold text-dark">You haven't enrolled in any courses yet</h5>
+            <p class="text-muted mx-auto mb-4" style="max-width: 480px;">
+                Explore our catalog of in-depth, hands-on courses in web development, cloud computing, and design.
+            </p>
+            <div>
+                <a href="@Url.Action("Index", "Course")" class="btn btn-primary rounded-pill px-4 py-2">
+                    <i class="bi bi-search me-1"></i> Browse Course Catalog
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var course in Model.EnrolledCourses)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white d-flex flex-column">
+                        <div class="position-relative" style="height: 160px; background-color: #f1f5f9;">
+                            <img src="@(string.IsNullOrEmpty(course.ThumbnailUrl) ? "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&auto=format&fit=crop&q=80" : course.ThumbnailUrl)" 
+                                 class="w-100 h-100 object-fit-cover" 
+                                 alt="@course.Title"
+                                 onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&auto=format&fit=crop&q=80';" />
+                            <span class="badge position-absolute top-0 start-0 m-3 px-3 py-1 rounded-pill" style="background-color: @course.CategoryColor; color: white;">
+                                @course.CategoryName
+                            </span>
+                            @if (course.CompletionPercentage == 100)
+                            {
+                                <span class="badge bg-success position-absolute top-0 end-0 m-3 px-3 py-1 rounded-pill">
+                                    <i class="bi bi-check-circle-fill me-1"></i> Completed
+                                </span>
+                            }
+                        </div>
+
+                        <div class="card-body p-4 d-flex flex-column flex-grow-1">
+                            <div class="text-muted small mb-1">
+                                <i class="bi bi-person me-1"></i>@course.InstructorName
+                            </div>
+                            <h5 class="fw-bold text-dark mb-3 flex-grow-1 line-clamp-2">
+                                <a href="@Url.Action("Details", "Course", new { slug = course.Slug })" class="text-dark text-decoration-none">
+                                    @course.Title
+                                </a>
+                            </h5>
+
+                            <!-- Progress indicator -->
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between text-muted small mb-1">
+                                    <span>Progress</span>
+                                    <span class="fw-bold text-dark">@course.CompletionPercentage%</span>
+                                </div>
+                                <div class="progress" style="height: 8px; border-radius: 4px;">
+                                    <div class="progress-bar @(course.CompletionPercentage == 100 ? "bg-success" : "bg-primary")" 
+                                         role="progressbar" 
+                                         style="width: @(course.CompletionPercentage)%; border-radius: 4px;" 
+                                         aria-valuenow="@course.CompletionPercentage" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100"></div>
+                                </div>
+                                <div class="text-muted small mt-1">
+                                    @course.CompletedLessonsCount of @course.TotalLessonsCount lessons
+                                </div>
+                            </div>
+
+                            <div class="mt-auto pt-2 border-top">
+                                @if (course.NextLessonId.HasValue)
+                                {
+                                    <a href="@Url.Action("Player", "Learning", new { courseId = course.CourseId, lessonId = course.NextLessonId.Value })" class="btn btn-outline-primary w-100 rounded-pill">
+                                        <i class="bi bi-play-circle me-1"></i> Continue
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Player", "Learning", new { courseId = course.CourseId })" class="btn btn-outline-secondary w-100 rounded-pill">
+                                        <i class="bi bi-eye me-1"></i> View Content
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

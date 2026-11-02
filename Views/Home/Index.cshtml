@@ -1,0 +1,247 @@
+@model LMSPortal.ViewModels.LandingPageViewModel
+@{
+    ViewBag.Title = "Learn Anywhere, Anytime";
+}
+
+<!-- Hero Section -->
+<section class="py-5 bg-gradient-primary-soft position-relative overflow-hidden" style="background: linear-gradient(180deg, rgba(79, 70, 229, 0.06) 0%, rgba(248, 250, 252, 1) 100%);">
+    <div class="container py-4 py-lg-5">
+        <div class="row align-items-center gy-5">
+            <div class="col-lg-7">
+                <div class="d-inline-flex align-items-center bg-white border border-primary border-opacity-25 shadow-sm rounded-pill px-3 py-1 mb-3 text-primary small fw-semibold">
+                    <span class="badge bg-primary text-white rounded-pill me-2 px-2 py-1">New</span>
+                    Industry-aligned courses & real-world projects
+                </div>
+                <h1 class="display-4 fw-extrabold text-dark lh-tight mb-3">
+                    Learn Anywhere, Anytime. <br />
+                    <span class="text-primary">Empower Your Future.</span>
+                </h1>
+                <p class="lead text-muted mb-4 fs-5" style="max-width: 600px;">
+                    Gain practical, career-ready skills in software engineering, data science, cloud architecture, and modern product design with free, self-paced learning.
+                </p>
+
+                <!-- Course Search Bar -->
+                @using (Html.BeginForm("Index", "Course", FormMethod.Get, new { @class = "mb-4" }))
+                {
+                    <div class="card border-0 shadow-lg rounded-pill p-2 bg-white" style="max-width: 580px;">
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent border-0 ps-3 text-muted fs-5">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input type="text" name="search" class="form-control border-0 shadow-none ps-2" placeholder="What do you want to learn today? (e.g. C#, Python, React)" />
+                            <button class="btn btn-primary rounded-pill px-4 fw-semibold" type="submit">
+                                Find Courses
+                            </button>
+                        </div>
+                    </div>
+                }
+
+                <!-- Trust Badges -->
+                <div class="d-flex flex-wrap align-items-center gap-4 pt-2">
+                    <div class="d-flex align-items-center">
+                        <div class="text-warning fs-5 me-2">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-half"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold text-dark lh-1 small">4.8 / 5.0 Rating</div>
+                            <small class="text-muted" style="font-size: 11px;">from 12,000+ reviews</small>
+                        </div>
+                    </div>
+                    <div class="vr text-muted opacity-25 d-none d-sm-block"></div>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-patch-check-fill text-success fs-4 me-2"></i>
+                        <div>
+                            <div class="fw-bold text-dark lh-1 small">100% Free Enrollment</div>
+                            <small class="text-muted" style="font-size: 11px;">Zero subscription barriers</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&auto=format&fit=crop&q=80" 
+                         alt="Online Learning" 
+                         class="img-fluid rounded-4 shadow-lg w-100 object-fit-cover" 
+                         style="max-height: 440px;" />
+                    
+                    <!-- Floating Highlight Card -->
+                    <div class="position-absolute bottom-0 start-0 m-3 p-3 bg-white rounded-3 shadow-lg border-0 d-flex align-items-center" style="max-width: 260px;">
+                        <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 44px; height: 44px;">
+                            <i class="bi bi-award-fill fs-5"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold text-dark lh-1 small">Verified Progress</div>
+                            <small class="text-muted" style="font-size: 11px;">Track every completed lesson</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Category Showcase -->
+<section class="py-5 bg-white border-bottom">
+    <div class="container py-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
+            <div>
+                <span class="text-primary text-uppercase fw-bold small tracking-wider">Top Disciplines</span>
+                <h2 class="fw-bold text-dark mb-0">Explore Course Categories</h2>
+            </div>
+            <a href="@Url.Action("Index", "Course")" class="text-decoration-none fw-semibold small mt-2 mt-md-0">
+                View All Categories <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var cat in Model.Categories)
+            {
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <a href="@Url.Action("Index", "Course", new { category = cat.Slug })" class="text-decoration-none">
+                        <div class="card h-100 border rounded-4 p-4 text-center bg-white hover-shadow transition-all">
+                            <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle mb-3 mx-auto" style="width: 60px; height: 60px;">
+                                <i class="bi @cat.IconClass fs-3"></i>
+                            </div>
+                            <h5 class="fw-bold text-dark mb-1">@cat.Name</h5>
+                            <p class="text-muted small mb-2 line-clamp-2">@cat.Description</p>
+                            <span class="badge bg-light text-primary rounded-pill small mt-auto">
+                                @cat.CourseCount Available Courses
+                            </span>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Featured Courses Section -->
+<section class="py-5 bg-light">
+    <div class="container py-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
+            <div>
+                <span class="text-primary text-uppercase fw-bold small tracking-wider">Featured Curriculums</span>
+                <h2 class="fw-bold text-dark mb-0">Explore Most Popular Courses</h2>
+            </div>
+            <a href="@Url.Action("Index", "Course")" class="btn btn-outline-primary rounded-pill px-4 fw-semibold mt-3 mt-md-0">
+                Browse Full Catalog <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+
+        <div class="row">
+            @foreach (var course in Model.FeaturedCourses)
+            {
+                @Html.Partial("_CourseCard", course)
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Stats Counter Bar -->
+<section class="py-5 bg-dark text-white">
+    <div class="container">
+        <div class="row text-center gy-4">
+            <div class="col-6 col-md-3">
+                <div class="display-5 fw-extrabold text-primary mb-1">@(Model.TotalCoursesCount)+</div>
+                <div class="text-light text-opacity-75 small text-uppercase fw-semibold">Interactive Courses</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="display-5 fw-extrabold text-success mb-1">@(Model.TotalLessonsCount)+</div>
+                <div class="text-light text-opacity-75 small text-uppercase fw-semibold">Video Lessons</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="display-5 fw-extrabold text-warning mb-1">100%</div>
+                <div class="text-light text-opacity-75 small text-uppercase fw-semibold">Free & Self-Paced</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="display-5 fw-extrabold text-info mb-1">24/7</div>
+                <div class="text-light text-opacity-75 small text-uppercase fw-semibold">Global Access</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Learner Testimonials -->
+<section class="py-5 bg-white border-top">
+    <div class="container py-4">
+        <div class="text-center mb-5" style="max-width: 650px; margin: 0 auto;">
+            <span class="text-primary text-uppercase fw-bold small tracking-wider">Learner Success</span>
+            <h2 class="fw-bold text-dark">Stories From Our Community</h2>
+            <p class="text-muted">Discover how students and professionals leverage LMS Portal to master complex technologies and advance their careers.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-12 col-md-4">
+                <div class="card h-100 border rounded-4 p-4 shadow-sm bg-white">
+                    <div class="text-warning mb-3">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    </div>
+                    <p class="text-secondary small mb-4 flex-grow-1">
+                        "The Full-Stack C# and React course gave me the exact architecture principles I needed to lead our engineering migration. Clear, concise, and production-ready."
+                    </p>
+                    <div class="d-flex align-items-center">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80" class="rounded-circle me-3" style="width: 44px; height: 44px;" alt="Elena S." />
+                        <div>
+                            <div class="fw-bold text-dark small">Elena Rostova</div>
+                            <small class="text-muted" style="font-size: 11px;">Full-Stack Engineer</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="card h-100 border rounded-4 p-4 shadow-sm bg-white">
+                    <div class="text-warning mb-3">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    </div>
+                    <p class="text-secondary small mb-4 flex-grow-1">
+                        "I love how the learning player tracks my progress across modules and lets me resume right where I left off with one click. Outstanding design."
+                    </p>
+                    <div class="d-flex align-items-center">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" class="rounded-circle me-3" style="width: 44px; height: 44px;" alt="David K." />
+                        <div>
+                            <div class="fw-bold text-dark small">David Kumar</div>
+                            <small class="text-muted" style="font-size: 11px;">Data Scientist</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="card h-100 border rounded-4 p-4 shadow-sm bg-white">
+                    <div class="text-warning mb-3">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    </div>
+                    <p class="text-secondary small mb-4 flex-grow-1">
+                        "Clean, responsive, and distraction-free. The syllabus drawer and free preview feature helped me understand exactly what to expect before diving in."
+                    </p>
+                    <div class="d-flex align-items-center">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" class="rounded-circle me-3" style="width: 44px; height: 44px;" alt="Jessica M." />
+                        <div>
+                            <div class="fw-bold text-dark small">Jessica Morales</div>
+                            <small class="text-muted" style="font-size: 11px;">Product Designer</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Banner -->
+<section class="py-5 bg-primary text-white position-relative overflow-hidden">
+    <div class="container py-4 text-center" style="max-width: 700px;">
+        <h2 class="display-6 fw-bold mb-3">Ready to Accelerate Your Career?</h2>
+        <p class="lead text-white text-opacity-80 mb-4 fs-6">
+            Join thousands of passionate learners today. Create your free student account in under 30 seconds and start learning immediately.
+        </p>
+        <a href="@Url.Action("Register", "Account")" class="btn btn-light btn-lg text-primary fw-bold px-4 rounded-pill shadow">
+            Get Started for Free <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+    </div>
+</section>

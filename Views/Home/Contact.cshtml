@@ -1,0 +1,90 @@
+@{
+    ViewBag.Title = "Contact Us";
+}
+
+<section class="py-5 bg-white border-bottom">
+    <div class="container py-4">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-7">
+                <span class="text-primary text-uppercase fw-bold small tracking-wider">Get in Touch</span>
+                <h1 class="display-5 fw-bold text-dark mb-3">We'd Love to Hear From You</h1>
+                <p class="lead text-secondary fs-6">
+                    Have feedback about a course, need technical assistance, or interested in contributing as an instructor? Reach out anytime.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container py-4">
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-5">
+                <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white h-100">
+                    <h4 class="fw-bold text-dark mb-4">Contact Information</h4>
+                    
+                    <div class="d-flex align-items-start mb-4">
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 44px; height: 44px;">
+                            <i class="bi bi-geo-alt fs-5"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold text-dark small">Headquarters</div>
+                            <p class="text-muted small mb-0">100 Tech Innovation Way, San Francisco, CA 94107</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-start mb-4">
+                        <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 44px; height: 44px;">
+                            <i class="bi bi-envelope fs-5"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold text-dark small">Support Email</div>
+                            <p class="text-muted small mb-0">support@lmsportal.local</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-start mb-4">
+                        <div class="bg-warning bg-opacity-10 text-warning rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 44px; height: 44px;">
+                            <i class="bi bi-clock fs-5"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold text-dark small">Support Availability</div>
+                            <p class="text-muted small mb-0">Monday &ndash; Friday &bull; 9:00 AM &ndash; 6:00 PM PST</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
+                    <h4 class="fw-bold text-dark mb-4">Send Us a Message</h4>
+                    <form onsubmit="alert('Thank you for reaching out! In this demo environment, your message has been logged.'); return false;">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold text-secondary small">Your Name</label>
+                                <input type="text" class="form-control" placeholder="Jane Doe" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold text-secondary small">Email Address</label>
+                                <input type="email" class="form-control" placeholder="jane@example.com" required />
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold text-secondary small">Subject</label>
+                                <input type="text" class="form-control" placeholder="How can we help?" required />
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold text-secondary small">Message</label>
+                                <textarea class="form-control" rows="4" placeholder="Tell us more about your inquiry..." required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary rounded-pill px-4 fw-semibold py-2">
+                                    Send Message <i class="bi bi-send ms-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

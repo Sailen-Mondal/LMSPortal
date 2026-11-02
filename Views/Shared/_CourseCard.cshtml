@@ -1,0 +1,62 @@
+@model LMSPortal.ViewModels.CourseCardViewModel
+
+<div class="col-12 col-md-6 col-lg-4 mb-4">
+    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden course-card bg-white">
+        <!-- Thumbnail Container -->
+        <div class="position-relative overflow-hidden" style="height: 190px;">
+            <a href="@Url.Action("Details", "Course", new { slug = Model.Slug })">
+                <img src="@Model.ThumbnailUrl" 
+                     class="card-img-top w-100 h-100 object-fit-cover" 
+                     alt="@Model.Title"
+                     onerror="this.src='https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&auto=format&fit=crop&q=80'">
+            </a>
+            <div class="position-absolute top-0 start-0 m-3">
+                <span class="badge bg-white text-dark shadow-sm px-2.5 py-1.5 rounded-pill small fw-semibold">
+                    <i class="bi bi-bookmark-fill text-primary me-1"></i> @Model.CategoryName
+                </span>
+            </div>
+            <div class="position-absolute top-0 end-0 m-3">
+                <span class="badge bg-dark bg-opacity-75 text-white px-2 py-1 rounded-pill small">
+                    @Model.Level
+                </span>
+            </div>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body d-flex flex-column p-4">
+            <h5 class="card-title fw-bold text-dark mb-2 lh-base">
+                <a href="@Url.Action("Details", "Course", new { slug = Model.Slug })" class="text-decoration-none text-dark hover-primary line-clamp-2">
+                    @Model.Title
+                </a>
+            </h5>
+            
+            <p class="card-text text-muted small mb-4 flex-grow-1 text-truncate-2">
+                @Model.ShortDescription
+            </p>
+
+            <!-- Instructor Row -->
+            <div class="d-flex align-items-center mb-3 pt-3 border-top">
+                <img src="@Model.InstructorAvatarUrl" 
+                     alt="@Model.InstructorName" 
+                     class="rounded-circle me-2 object-fit-cover" 
+                     style="width: 32px; height: 32px;"
+                     onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'">
+                <div class="text-truncate">
+                    <div class="fw-semibold text-dark small lh-1">@Model.InstructorName</div>
+                    <small class="text-muted" style="font-size: 11px;">@Model.InstructorTitle</small>
+                </div>
+            </div>
+
+            <!-- Footer Meta & Action -->
+            <div class="d-flex align-items-center justify-content-between pt-2">
+                <div class="d-flex align-items-center text-muted small gap-3">
+                    <span><i class="bi bi-play-circle text-primary me-1"></i> @Model.LessonCount lessons</span>
+                    <span><i class="bi bi-clock text-secondary me-1"></i> @(Model.DurationMinutes / 60)h @(Model.DurationMinutes % 60)m</span>
+                </div>
+                <a href="@Url.Action("Details", "Course", new { slug = Model.Slug })" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-semibold">
+                    Explore
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

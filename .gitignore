@@ -1,0 +1,63 @@
+## ====================================================================
+## Visual Studio / .NET .gitignore
+## LMSPortal Enterprise Learning Management System
+## ====================================================================
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# Visual Studio build artifacts
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio 2015+ cache / IDE files
+.vs/
+.vscode/
+
+# Test results and code coverage
+TestResults/
+[Tt]est[Rr]esult*/
+*.trx
+*.coverage
+*.coveragexml
+
+# NuGet Packages and tools
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/repositories.config
+nuget.exe
+
+# Local Database Files (SQL Server LocalDB / Express)
+*.mdf
+*.ldf
+*.ndf
+App_Data/*.mdf
+App_Data/*.ldf
+
+# Environment, secrets, and local overrides
+*.local.config
+*.secret.config
+
+# Operating System Files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store

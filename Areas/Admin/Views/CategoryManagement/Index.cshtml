@@ -1,0 +1,80 @@
+@model IEnumerable<LMSPortal.Models.Category>
+@{
+    ViewBag.Title = "Category Management";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold text-dark mb-1">Category Management</h3>
+        <p class="text-muted mb-0">Organize courses by domain taxonomies, icons, and display ordering.</p>
+    </div>
+    <div>
+        <a href="@Url.Action("Create", "CategoryManagement", new { area = "Admin" })" class="btn btn-primary rounded-pill px-4">
+            <i class="bi bi-plus-lg me-1"></i> Add Category
+        </a>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-4 bg-white overflow-hidden">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th class="ps-4">Icon & Name</th>
+                    <th>Slug</th>
+                    <th>Display Order</th>
+                    <th>Course Count</th>
+                    <th>Status</th>
+                    <th class="text-end pe-4">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cat in Model)
+                {
+                    <tr>
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="bg-primary bg-opacity-10 text-primary rounded-3 p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                    <i class="bi @(string.IsNullOrEmpty(cat.IconClass) ? "bi-tag" : cat.IconClass) fs-5"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-bold text-dark">@cat.Name</div>
+                                    <small class="text-muted">@cat.Description</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td><code>@cat.Slug</code></td>
+                        <td>@cat.DisplayOrder</td>
+                        <td>
+                            <span class="badge bg-light text-dark border">
+                                @cat.Courses.Count courses
+                            </span>
+                        </td>
+                        <td>
+                            @if (cat.IsActive)
+                            {
+                                <span class="badge bg-success-subtle text-success border border-success rounded-pill px-2">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary-subtle text-secondary border border-secondary rounded-pill px-2">Inactive</span>
+                            }
+                        </td>
+                        <td class="text-end pe-4">
+                            <a href="@Url.Action("Edit", "CategoryManagement", new { area = "Admin", id = cat.Id })" class="btn btn-sm btn-outline-secondary me-1">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            @using (Html.BeginForm("Delete", "CategoryManagement", new { area = "Admin", id = cat.Id }, FormMethod.Post, new { @class = "d-inline", onsubmit = "return confirm('Are you sure you want to delete this category? Categories containing courses cannot be deleted.');" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Category">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

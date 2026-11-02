@@ -1,0 +1,61 @@
+@model LMSPortal.Models.Category
+@{
+    ViewBag.Title = "Edit Category - " + Model.Name;
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4 bg-white p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+                <h4 class="fw-bold text-dark mb-0">Edit Category</h4>
+                <a href="@Url.Action("Index", "CategoryManagement", new { area = "Admin" })" class="btn btn-outline-secondary rounded-pill px-3">
+                    <i class="bi bi-arrow-left me-1"></i> Back
+                </a>
+            </div>
+
+            @using (Html.BeginForm("Edit", "CategoryManagement", new { area = "Admin" }, FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.Id)
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+                <div class="form-floating mb-3">
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control rounded-3", placeholder = "Category Name", required = "required" })
+                    @Html.LabelFor(m => m.Name)
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger small" })
+                </div>
+
+                <div class="form-floating mb-3">
+                    @Html.TextBoxFor(m => m.Slug, new { @class = "form-control rounded-3", placeholder = "slug", required = "required" })
+                    @Html.LabelFor(m => m.Slug)
+                    @Html.ValidationMessageFor(m => m.Slug, "", new { @class = "text-danger small" })
+                </div>
+
+                <div class="form-floating mb-3">
+                    @Html.TextBoxFor(m => m.IconClass, new { @class = "form-control rounded-3", placeholder = "bi-code-slash" })
+                    @Html.LabelFor(m => m.IconClass)
+                </div>
+
+                <div class="form-floating mb-3">
+                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control rounded-3", style = "height: 90px;", placeholder = "Description" })
+                    @Html.LabelFor(m => m.Description)
+                </div>
+
+                <div class="form-floating mb-3">
+                    @Html.TextBoxFor(m => m.DisplayOrder, new { @class = "form-control rounded-3", type = "number", placeholder = "1" })
+                    @Html.LabelFor(m => m.DisplayOrder)
+                </div>
+
+                <div class="form-check form-switch mb-4">
+                    @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", role = "switch", id = "switchActive" })
+                    <label class="form-check-label fw-semibold" for="switchActive">Active (visible in filter)</label>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 pt-3 border-top">
+                    <a href="@Url.Action("Index", "CategoryManagement", new { area = "Admin" })" class="btn btn-outline-secondary rounded-pill px-4">Cancel</a>
+                    <button type="submit" class="btn btn-primary rounded-pill px-5 fw-semibold">Save Changes</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

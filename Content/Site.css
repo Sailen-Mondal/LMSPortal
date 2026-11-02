@@ -1,0 +1,71 @@
+/* Modern LMS Portal Design System */
+:root {
+    --lms-primary: #4F46E5;
+    --lms-primary-hover: #4338CA;
+    --lms-dark: #0F172A;
+    --lms-dark-surface: #1E293B;
+    --lms-bg: #F8FAFC;
+    --lms-border: #E2E8F0;
+    --lms-text-muted: #64748B;
+    --lms-radius: 12px;
+}
+
+body {
+    background-color: var(--lms-bg);
+    color: var(--lms-dark);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.body-content {
+    flex: 1 0 auto;
+}
+
+/* Fix legacy MVC template override on form controls */
+input,
+select,
+textarea {
+    max-width: none;
+}
+
+/* Modern Card Stylings */
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.course-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Badge Tweaks */
+.badge {
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+/* Progress Bar Transitions */
+.progress-bar {
+    transition: width 0.4s ease-in-out;
+}
+
+/* Navigation Tweaks */
+.navbar {
+    backdrop-filter: blur(12px);
+    background-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.navbar .nav-link {
+    font-weight: 500;
+    color: #475569;
+    padding: 0.5rem 0.85rem;
+    transition: color 0.15s ease;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+    color: var(--lms-primary);
+}

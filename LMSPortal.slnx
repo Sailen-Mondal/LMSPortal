@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="LMSPortal.csproj" Id="d3e6a658-7f09-4de9-ac86-7168e9ddbdb9" />
+  <Project Path="LMSPortal.Tests\LMSPortal.Tests.csproj" />
+</Solution>

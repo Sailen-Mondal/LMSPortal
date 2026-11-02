@@ -1,0 +1,133 @@
+@model LMSPortal.ViewModels.StudentMyCoursesViewModel
+@{
+    ViewBag.Title = "My Enrolled Courses";
+}
+
+<div class="my-courses-page py-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+        <div>
+            <h2 class="h3 fw-bold mb-1 text-dark">My Enrolled Courses</h2>
+            <p class="text-muted mb-0">Manage and resume all your enrolled learning programs.</p>
+        </div>
+        <div>
+            <a href="@Url.Action("Index", "Course")" class="btn btn-primary rounded-pill px-4">
+                <i class="bi bi-plus-lg me-1"></i> Enroll in More Courses
+            </a>
+        </div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <ul class="nav nav-pills mb-4 gap-2">
+        <li class="nav-item">
+            <a class="nav-link rounded-pill px-4 @(Model.Filter == "all" ? "active" : "")" 
+               href="@Url.Action("MyCourses", "Student", new { filter = "all" })">
+                All Courses <span class="badge rounded-pill bg-light text-dark ms-1">@Model.TotalCount</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link rounded-pill px-4 @(Model.Filter == "in-progress" ? "active" : "")" 
+               href="@Url.Action("MyCourses", "Student", new { filter = "in-progress" })">
+                In Progress <span class="badge rounded-pill bg-light text-dark ms-1">@Model.InProgressCount</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link rounded-pill px-4 @(Model.Filter == "completed" ? "active" : "")" 
+               href="@Url.Action("MyCourses", "Student", new { filter = "completed" })">
+                Completed <span class="badge rounded-pill bg-light text-dark ms-1">@Model.CompletedCount</span>
+            </a>
+        </li>
+    </ul>
+
+    <!-- Courses Grid -->
+    @if (Model.Courses == null || !Model.Courses.Any())
+    {
+        <div class="card border-0 shadow-sm rounded-4 text-center py-5 px-4 bg-white">
+            <div class="mb-3">
+                <i class="bi bi-inbox text-muted" style="font-size: 3.5rem;"></i>
+            </div>
+            <h5 class="fw-bold text-dark">No courses found in this category</h5>
+            <p class="text-muted mx-auto mb-4" style="max-width: 480px;">
+                @(Model.Filter == "completed" 
+                    ? "You haven't completed any courses yet. Keep watching lessons and marking them complete!" 
+                    : "No courses match the current selection.")
+            </p>
+            <div>
+                <a href="@Url.Action("Index", "Course")" class="btn btn-outline-primary rounded-pill px-4">
+                    Explore Catalog
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var course in Model.Courses)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white d-flex flex-column">
+                        <div class="position-relative" style="height: 160px; background-color: #f1f5f9;">
+                            <img src="@(string.IsNullOrEmpty(course.ThumbnailUrl) ? "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&auto=format&fit=crop&q=80" : course.ThumbnailUrl)" 
+                                 class="w-100 h-100 object-fit-cover" 
+                                 alt="@course.Title"
+                                 onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&auto=format&fit=crop&q=80';" />
+                            <span class="badge position-absolute top-0 start-0 m-3 px-3 py-1 rounded-pill" style="background-color: @course.CategoryColor; color: white;">
+                                @course.CategoryName
+                            </span>
+                            @if (course.CompletionPercentage == 100)
+                            {
+                                <span class="badge bg-success position-absolute top-0 end-0 m-3 px-3 py-1 rounded-pill">
+                                    <i class="bi bi-check-circle-fill me-1"></i> Completed
+                                </span>
+                            }
+                        </div>
+
+                        <div class="card-body p-4 d-flex flex-column flex-grow-1">
+                            <div class="text-muted small mb-1">
+                                <i class="bi bi-person me-1"></i>@course.InstructorName
+                            </div>
+                            <h5 class="fw-bold text-dark mb-3 flex-grow-1 line-clamp-2">
+                                <a href="@Url.Action("Details", "Course", new { slug = course.Slug })" class="text-dark text-decoration-none">
+                                    @course.Title
+                                </a>
+                            </h5>
+
+                            <!-- Progress indicator -->
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between text-muted small mb-1">
+                                    <span>Progress</span>
+                                    <span class="fw-bold text-dark">@course.CompletionPercentage%</span>
+                                </div>
+                                <div class="progress" style="height: 8px; border-radius: 4px;">
+                                    <div class="progress-bar @(course.CompletionPercentage == 100 ? "bg-success" : "bg-primary")" 
+                                         role="progressbar" 
+                                         style="width: @(course.CompletionPercentage)%; border-radius: 4px;" 
+                                         aria-valuenow="@course.CompletionPercentage" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100"></div>
+                                </div>
+                                <div class="text-muted small mt-1">
+                                    @course.CompletedLessonsCount of @course.TotalLessonsCount lessons
+                                </div>
+                            </div>
+
+                            <div class="mt-auto pt-2 border-top">
+                                @if (course.NextLessonId.HasValue)
+                                {
+                                    <a href="@Url.Action("Player", "Learning", new { courseId = course.CourseId, lessonId = course.NextLessonId.Value })" class="btn btn-outline-primary w-100 rounded-pill">
+                                        <i class="bi bi-play-circle me-1"></i> Continue Learning
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Player", "Learning", new { courseId = course.CourseId })" class="btn btn-outline-secondary w-100 rounded-pill">
+                                        <i class="bi bi-arrow-repeat me-1"></i> Review Course
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

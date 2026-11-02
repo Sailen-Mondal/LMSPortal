@@ -1,0 +1,77 @@
+@model LMSPortal.ViewModels.RegisterViewModel
+@{
+    ViewBag.Title = "Create an Account";
+}
+
+<div class="row justify-content-center py-5">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
+            <div class="text-center mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle mb-3" style="width: 56px; height: 56px;">
+                    <i class="bi bi-person-plus fs-3"></i>
+                </div>
+                <h2 class="fw-bold text-dark mb-1">Create Student Account</h2>
+                <p class="text-muted small">Join our learning platform and unlock world-class courses</p>
+            </div>
+
+            @using (Html.BeginForm("Register", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form", @class = "needs-validation" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-danger py-2 small mb-3" })
+
+                <div class="mb-3">
+                    @Html.LabelFor(m => m.FullName, new { @class = "form-label fw-semibold text-secondary small" })
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-person"></i></span>
+                        @Html.TextBoxFor(m => m.FullName, new { @class = "form-control border-start-0 ps-0", placeholder = "Alex Mercer", autocomplete = "name" })
+                    </div>
+                    @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger small mt-1 d-block" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(m => m.Email, new { @class = "form-label fw-semibold text-secondary small" })
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-envelope"></i></span>
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control border-start-0 ps-0", placeholder = "name@example.com", autocomplete = "email" })
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger small mt-1 d-block" })
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        @Html.LabelFor(m => m.Password, new { @class = "form-label fw-semibold text-secondary small" })
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-lock"></i></span>
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control border-start-0 ps-0", placeholder = "At least 6 chars", autocomplete = "new-password" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger small mt-1 d-block" })
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "form-label fw-semibold text-secondary small" })
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-shield-check"></i></span>
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control border-start-0 ps-0", placeholder = "Re-enter password", autocomplete = "new-password" })
+                        </div>
+                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger small mt-1 d-block" })
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg w-100 fw-semibold rounded-3 mb-3 shadow-sm">
+                    Create Account & Start Learning <i class="bi bi-arrow-right ms-1"></i>
+                </button>
+
+                <div class="text-center pt-2">
+                    <span class="text-muted small">Already registered?</span>
+                    <a href="@Url.Action("Login", "Account", new { returnUrl = ViewBag.ReturnUrl })" class="text-decoration-none fw-semibold ms-1 small">
+                        Sign In Instead
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
